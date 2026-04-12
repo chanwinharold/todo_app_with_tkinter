@@ -1,11 +1,11 @@
 from tkinter import Frame, Label, StringVar, Button
-
+from src.schemes.views import UserAccountView
 from config import colors
 from src.views.components.field import FieldForm
 
 
 class AccountView(Frame):
-    def __init__(self, root_, on_submit_form=None):
+    def __init__(self, root_):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -52,7 +52,7 @@ class AccountView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.fetch_credentials
+            # command=self.fetch_credentials
         )
         self.btn_register.pack(fill='x', expand=True)
 
@@ -65,7 +65,7 @@ class AccountView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.fetch_credentials
+            # command=self.fetch_credentials
         )
         self.btn_register.pack(side="left", pady=(0, 24))
 
@@ -78,14 +78,14 @@ class AccountView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.fetch_credentials
+            # command=self.fetch_credentials
         )
         self.btn_register.pack(side="right", pady=(0, 24))
 
-    def fetch_credentials(self):
-        return {
-            "username": self.username_value.get(),
-            "old_password": self.old_password_value.get(),
-            "new_password": self.new_password_value.get(),
-            "confirmation": self.confirm_pwd_value.get()
-        }
+        self.credentials = UserAccountView(
+            username=self.username_value.get(),
+            old_password=self.old_password_value.get(),
+            new_password=self.new_password_value.get(),
+            confirm_pwd=self.confirm_pwd_value.get()
+        )
+

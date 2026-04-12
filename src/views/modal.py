@@ -2,11 +2,10 @@ from tkinter import Frame, Label, StringVar, Button, Text
 from tkinter.ttk import Combobox
 from config import colors, CATEGORY_COLORS
 from src.views.components.field import FieldForm
-from src.models.todo import Todo
-
+from src.schemes.views import CategoryView, TodoView
 
 class CategoryModalView(Frame):
-    def __init__(self, root_, on_submit_form=None):
+    def __init__(self, root_):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -65,19 +64,18 @@ class CategoryModalView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.fetch_data
+            # command=self.fetch_data
         )
         self.btn_register.pack(side="bottom", pady=32)
 
-    def fetch_data(self):
-        return {
-            "username": self.category_value.get(),
-            "password": self.menu_color_value.get()
-        }
+        self.credentials = CategoryView(
+            name=self.category_value.get(),
+            color=self.menu_color_value.get()
+        )
 
 
 class TodoModalView(Frame):
-    def __init__(self, root_, on_submit_form=None):
+    def __init__(self, root_):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -129,19 +127,18 @@ class TodoModalView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.fetch_credentials
+            # command=self.fetch_credentials
         )
         self.btn_register.pack(side="bottom", pady=32)
 
-    def fetch_credentials(self):
-        return {
-            "todo": self.todo_value.get(),
-            "description": self.description.get("1.0", "end-1c")
-        }
+        self.credentials = TodoView(
+            title=self.todo_value.get(),
+            description=self.description.get("1.0", "end-1c")
+        )
 
 
 class TodoGlimpseModalView(Frame):
-    def __init__(self, root_, todo: Todo, on_submit_form=None):
+    def __init__(self, root_, todo: TodoView):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -215,9 +212,7 @@ class TodoGlimpseModalView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.close
+            # command=self.close
         )
         self.btn_register.pack(side="bottom", pady=32)
 
-    def close(self):
-        self.destroy()

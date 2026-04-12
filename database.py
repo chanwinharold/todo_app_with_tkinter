@@ -11,6 +11,7 @@ class Database:
     def connect(self) -> tuple[Connection, Cursor] | None:
         try:
             self.conn = sql.connect(self.db_path)
+            self.conn.execute("""PRAGMA foreign_keys = ON""")
             self.cursor = self.conn.cursor()
             res = self.cursor.execute("SELECT 1")
             res.fetchone()

@@ -1,10 +1,11 @@
 from tkinter import Frame, Label, Button, StringVar
 from config import colors
 from .components.field import FieldForm
+from src.schemes.views import UserLoginView, UserRegisterView, UserManagerView
 
 
 class RegisterFormView(Frame):
-    def __init__(self, root_, on_submit_form=None):
+    def __init__(self, root_):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -47,20 +48,19 @@ class RegisterFormView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.fetch_credentials
+            # command=
         )
         self.btn_register.pack(side="bottom", pady=32)
 
-    def fetch_credentials(self):
-        return {
-            "username": self.username_value.get(),
-            "password": self.password_value.get(),
-            "confirmation": self.confirm_pwd_value.get()
-        }
+        self.credentials = UserRegisterView(
+            username=self.username_value.get(),
+            password=self.password_value.get(),
+            confirm_pwd=self.confirm_pwd_value.get()
+        )
 
 
 class LoginFormView(Frame):
-    def __init__(self, root_, on_submit_form=None):
+    def __init__(self, root_):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -99,12 +99,12 @@ class LoginFormView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            command=self.fetch_credentials
+            # command=self.fetch_credentials
         )
         self.btn_register.pack(side="bottom", pady=32)
 
-    def fetch_credentials(self):
-        return {
-            "username": self.username_value.get(),
-            "password": self.password_value.get()
-        }
+        self.credentials = UserLoginView(
+            username=self.username_value.get(),
+            password=self.password_value.get()
+        )
+
