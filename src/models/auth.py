@@ -5,63 +5,80 @@ import jwt
 import os
 import dotenv
 
-dotenv.load_dotenv("../../.env")
+dotenv.load_dotenv(".env")
 SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
 
 def create_user(user: UserModel):
-    user.password = bcrypt.hash(user.password)
+    try:
+        user.password = bcrypt.hash(user.password)
 
-    cursor.execute("""
-        INSERT INTO USERS (username, password)
-            VALUES (?, ?)
-    """, [user.username, user.password])
-    conn.commit()
+        cursor.execute("""
+                       INSERT INTO USERS (username, password)
+                       VALUES (?, ?)
+                       """, [user.username, user.password])
+        conn.commit()
 
-    return "User registered !"
+        return "User registered !"
+    except Exception as errors:
+        raise errors
 
 
 def login_user(user: UserModel):
-    cursor.execute("""
-        SELECT *
-        FROM USERS
-        WHERE username = ?
-    """, user.username)
+    try:
+        cursor.execute("""
+                       SELECT *
+                       FROM USERS
+                       WHERE username = ?
+                       """, [user.username])
+        res = cursor.fetchone()
+        res = UserModel(
+            id_user=res[0],
+            username=res[1],
+            password=res[2],
+            created_at=res[3]
+        )
+        if not res:
+            raise Exception
 
-    res: UserModel = cursor.fetchone()
-    if not res:
-        raise Exception
+        valid: bool = bcrypt.verify(user.password, res.password)
+        if not valid:
+            raise Exception
 
-    valid: bool = bcrypt.verify(user.password, res.password)
-    if not valid:
-        raise Exception
-
-    return jwt.encode(
-        {"id_user": res.id_user, "created_at": res.created_at},
-        SECRET_KEY,
-        algorithms=["HS256"]
-    )
+        return jwt.encode(
+            {"id_user": res.id_user},
+            SECRET_KEY,
+            algorithm="HS256"
+        )
+    except Exception as errors:
+        raise errors
 
 
 def update_user(user: UserModel):
-    cursor.execute("""
-        UPDATE USERS
-        SET 
-            username = ?, 
-            password = ?
-        WHERE id_user = ?
-    """, [user.username, user.password, user.id_user])
-    conn.commit()
+    try:
+        cursor.execute("""
+                       UPDATE USERS
+                       SET username = ?,
+                           password = ?
+                       WHERE id_user = ?
+                       """, [user.username, user.password, user.id_user])
+        conn.commit()
 
-    return "User updated !"
+        return "User updated !"
+    except Exception as errors:
+        raise errors
 
 
 def delete_user(id_user: int):
-    cursor.execute("""
-        DELETE FROM USERS
-            WHERE id_user = ?
-    """, [id_user])
-    conn.commit()
+    try:
+        cursor.execute("""
+                       DELETE
+                       FROM USERS
+                       WHERE id_user = ?
+                       """, [id_user])
+        conn.commit()
 
-    return "User deleted !"
+        return "User deleted !"
+    except Exception as errors:
+        raise errors
 

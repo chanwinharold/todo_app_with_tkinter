@@ -4,7 +4,7 @@ from config import colors
 
 
 class FieldForm(Frame):
-    def __init__(self, root_, label_: str, text_variable):
+    def __init__(self, root_, label_: str, text_variable, show: str=""):
         super().__init__(root_, bg=colors.neutral_100)
 
         self.label = Label(
@@ -18,6 +18,6 @@ class FieldForm(Frame):
         )
         self.label.pack()
 
-        self.entry = Entry(self, width=100, textvariable=text_variable)
+        self.entry = Entry(self, width=100, textvariable=text_variable, show=show)
         self.entry.pack(ipady=4, pady=(0, 12))
 

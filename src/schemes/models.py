@@ -4,25 +4,25 @@ from datetime import datetime
 
 
 class UserModel(BaseModel):
-    id_user: int
+    id_user: Optional[int]=None
     username: str
     password: str
-    created_at: Optional[datetime]
+    created_at: Optional[datetime]=None
 
 
 class TodoModel(BaseModel):
-    id_todo: int
+    id_todo: Optional[int]=None
     title: str
     description: str
     done: bool
-    created_at: Optional[datetime]
-    id_cat: Optional[int]
+    created_at: Optional[datetime]=None
+    id_cat: Optional[int]=None
 
 
 class CategoryModal(BaseModel):
-    id_cat: int
+    id_cat: Optional[int]=None
     name: str
     color: str
-    created_at: Optional[datetime]
-    id_user: Optional[datetime]
+    created_at: Optional[datetime]=None
+    id_user: Optional[datetime]=None
 

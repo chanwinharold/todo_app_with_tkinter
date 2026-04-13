@@ -1,11 +1,11 @@
 from tkinter import Frame, Label, Button, StringVar
 from config import colors
 from .components.field import FieldForm
-from src.schemes.views import UserLoginView, UserRegisterView, UserManagerView
+from src.schemes.views import UserLoginView, UserRegisterView
 
 
 class RegisterFormView(Frame):
-    def __init__(self, root_):
+    def __init__(self, root_, on_register, goto):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -32,11 +32,11 @@ class RegisterFormView(Frame):
         self.username.pack()
 
         self.password_value = StringVar()
-        self.password = FieldForm(self, "Password", text_variable=self.password_value)
+        self.password = FieldForm(self, "Password", text_variable=self.password_value, show="*")
         self.password.pack()
 
         self.confirm_pwd_value = StringVar()
-        self.confirm_pwd = FieldForm(self, "Confirm password", text_variable=self.confirm_pwd_value)
+        self.confirm_pwd = FieldForm(self, "Confirm password", text_variable=self.confirm_pwd_value, show="*")
         self.confirm_pwd.pack()
 
         self.btn_register = Button(
@@ -48,19 +48,21 @@ class RegisterFormView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            # command=
+            command=lambda : on_register
+            (
+                UserRegisterView(
+                    username=self.username_value.get(),
+                    password=self.password_value.get(),
+                    confirm_pwd=self.confirm_pwd_value.get()
+                ),
+                goto
+            )
         )
         self.btn_register.pack(side="bottom", pady=32)
 
-        self.credentials = UserRegisterView(
-            username=self.username_value.get(),
-            password=self.password_value.get(),
-            confirm_pwd=self.confirm_pwd_value.get()
-        )
-
 
 class LoginFormView(Frame):
-    def __init__(self, root_):
+    def __init__(self, root_, on_login, goto):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -87,7 +89,7 @@ class LoginFormView(Frame):
         self.username.pack()
 
         self.password_value = StringVar()
-        self.password = FieldForm(self, "Password", text_variable=self.password_value)
+        self.password = FieldForm(self, "Password", text_variable=self.password_value, show="*")
         self.password.pack()
 
         self.btn_register = Button(
@@ -99,12 +101,14 @@ class LoginFormView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            # command=self.fetch_credentials
+            command=lambda : on_login
+            (
+                UserLoginView(
+                    username=self.username_value.get(),
+                    password=self.password_value.get()
+                ),
+                goto
+            )
         )
         self.btn_register.pack(side="bottom", pady=32)
-
-        self.credentials = UserLoginView(
-            username=self.username_value.get(),
-            password=self.password_value.get()
-        )
 
