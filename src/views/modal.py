@@ -5,7 +5,7 @@ from src.views.components.field import FieldForm
 from src.schemes.views import CategoryView, TodoView
 
 class CategoryModalView(Frame):
-    def __init__(self, root_):
+    def __init__(self, root_, on_create, goto):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -64,14 +64,16 @@ class CategoryModalView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            # command=self.fetch_data
+            command=lambda : on_create
+            (
+                CategoryView(
+                    name=self.category_value.get(),
+                    color=self.menu_color_value.get()
+                ),
+                goto
+            )
         )
         self.btn_register.pack(side="bottom", pady=32)
-
-        self.credentials = CategoryView(
-            name=self.category_value.get(),
-            color=self.menu_color_value.get()
-        )
 
 
 class TodoModalView(Frame):

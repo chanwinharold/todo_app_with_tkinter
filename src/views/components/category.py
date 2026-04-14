@@ -46,9 +46,4 @@ class CategoryFrame(Frame):
         self.todo_container = Frame(self, bg=colors.neutral_100)
         self.todo_container.pack(fill="x", expand=True)
 
-        self.todos = [
-            TodoFrame(
-                self.todo_container,
-                TodoView(title=f"Ma Todo {i}", description="Le fichier pyproject.toml est devenu un élément central et moderne dans l’écosystème Python.")
-            ) for i in range(5)
-        ]
+        self.todos = []

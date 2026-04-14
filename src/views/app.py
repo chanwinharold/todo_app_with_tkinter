@@ -3,7 +3,9 @@ from tkinter import Frame
 from config import colors
 from src.views.form import RegisterFormView, LoginFormView
 from src.views.core import CoreView
+from src.views.modal import CategoryModalView
 from src.controllers.form import auth_controller as auth
+from src.controllers.category import cat_controller as cat
 
 
 class AppView(Frame):
@@ -19,6 +21,11 @@ class AppView(Frame):
         self.current_view.destroy()
         self.current_view = LoginFormView(self, on_login=auth.on_login, goto=self.goto_core)
 
+    def goto_category(self):
+        self.current_view.destroy()
+        self.current_view = CategoryModalView(self, on_create=cat.on_create, goto=self.goto_core)
+
     def goto_core(self):
         self.current_view.destroy()
-        self.current_view = CoreView(self)
+        self.current_view = CoreView(self, on_click_add_cat=self.goto_category)
+

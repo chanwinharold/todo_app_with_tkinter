@@ -7,6 +7,7 @@ import dotenv
 
 dotenv.load_dotenv(".env")
 SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+ALGORITHM = "HS256"
 
 
 def create_user(user: UserModel):
@@ -48,7 +49,7 @@ def login_user(user: UserModel):
         return jwt.encode(
             {"id_user": res.id_user},
             SECRET_KEY,
-            algorithm="HS256"
+            algorithm=ALGORITHM
         )
     except Exception as errors:
         raise errors
