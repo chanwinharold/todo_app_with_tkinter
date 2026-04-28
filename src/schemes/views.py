@@ -20,11 +20,14 @@ class UserAccountView(BaseModel):
 
 
 class CategoryView(BaseModel):
+    id_cat: int = 0
     name: str
     color: str
 
 
 class TodoView(BaseModel):
+    id_todo: int = 0
     title: str
-    description: str
+    description: str = ""
+    done: bool = False
 

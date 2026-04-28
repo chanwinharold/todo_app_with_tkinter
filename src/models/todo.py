@@ -8,7 +8,12 @@ def create_todo(todo: TodoModel, id_cat: int):
     """, [todo.title, todo.description, id_cat])
     conn.commit()
 
-    return "Todo created !"
+    cursor.execute("SELECT last_insert_rowid()")
+    todo_id = cursor.fetchone()[0]
+
+    cursor.execute("SELECT * FROM TODOS WHERE id_todo = ?", [todo_id])
+    result = cursor.fetchone()
+    return result
 
 def get_all_todos(id_cat: int):
     cursor.execute("""
@@ -17,7 +22,7 @@ def get_all_todos(id_cat: int):
         WHERE id_cat = ?
     """, [id_cat])
 
-    return cursor.fetchone()
+    return cursor.fetchall()
 
 def get_one_todo(id_todo: int):
     cursor.execute("""

@@ -13,8 +13,8 @@ class UserModel(BaseModel):
 class TodoModel(BaseModel):
     id_todo: Optional[int]=None
     title: str
-    description: str
-    done: bool
+    description: str = ""
+    done: bool = False
     created_at: Optional[datetime]=None
     id_cat: Optional[int]=None
 
@@ -24,5 +24,5 @@ class CategoryModal(BaseModel):
     name: str
     color: str
     created_at: Optional[datetime]=None
-    id_user: Optional[datetime]=None
+    id_user: Optional[int]=None
 

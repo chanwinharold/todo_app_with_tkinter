@@ -14,8 +14,7 @@ class AppView(Frame):
         self.pack(fill="both", expand=True)
 
         self.theme_btn = ThemeBtn(self)
-        # self.current_view = RegisterFormView(self, on_register=auth.on_register, goto=self.goto_login)
-        self.current_view = LoginFormView(self, on_login=auth.on_login, goto=self.goto_core)
+        self.current_view = RegisterFormView(self, on_register=auth.on_register, goto=self.goto_login)
 
     def goto_login(self):
         self.current_view.destroy()

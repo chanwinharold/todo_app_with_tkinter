@@ -77,7 +77,7 @@ class CategoryModalView(Frame):
 
 
 class TodoModalView(Frame):
-    def __init__(self, root_):
+    def __init__(self, root_, category_view, on_create, goto, on_cancel=None):
         super().__init__(
             root_,
             bg=colors.neutral_100,
@@ -90,9 +90,14 @@ class TodoModalView(Frame):
         self.pack_propagate(False)
         self.pack(expand=True, anchor="center")
 
+        self.category_view = category_view
+        self.on_create_callback = on_create
+        self.goto_callback = goto
+        self.on_cancel_callback = on_cancel
+
         self.title = Label(
             self,
-            text="ToDo List App",
+            text="Nouvelle tâche",
             bg=colors.neutral_100,
             fg=colors.neutral_900,
             font=("Red Hat Mono", 20, "bold")
@@ -120,7 +125,7 @@ class TodoModalView(Frame):
         self.description = Text(self, width=50, height=8)
         self.description.pack()
 
-        self.btn_register = Button(
+        self.btn_submit = Button(
             self,
             text="Créer la tâche",
             width=25,
@@ -129,14 +134,35 @@ class TodoModalView(Frame):
             borderwidth=2,
             relief="solid",
             font=("Red Hat Mono", 10, "bold"),
-            # command=self.fetch_credentials
+            command=self.on_submit
         )
-        self.btn_register.pack(side="bottom", pady=32)
+        self.btn_submit.pack(side="bottom", pady=32)
 
-        self.credentials = TodoView(
+        self.btn_cancel = Button(
+            self,
+            text="Annuler",
+            width=25,
+            fg=colors.neutral_900,
+            bg=colors.neutral_100,
+            borderwidth=2,
+            relief="solid",
+            font=("Red Hat Mono", 10, "bold"),
+            command=self.on_close
+        )
+        self.btn_cancel.pack(side="bottom", pady=(0, 16))
+
+    def on_submit(self):
+        todo = TodoView(
             title=self.todo_value.get(),
             description=self.description.get("1.0", "end-1c")
         )
+        self.on_create_callback(todo, self.category_view.id_cat, self.goto_callback)
+        self.on_close()
+
+    def on_close(self):
+        self.destroy()
+        if self.goto_callback:
+            self.goto_callback()
 
 
 class TodoGlimpseModalView(Frame):

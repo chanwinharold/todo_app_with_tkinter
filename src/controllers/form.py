@@ -1,6 +1,7 @@
 from src.schemes.models import UserModel
 from src.schemes.views import UserRegisterView, UserLoginView
 from src.models.auth import create_user, login_user
+from src.utils.auth import set_token
 from tkinter import messagebox
 
 
@@ -41,6 +42,7 @@ class AuthController:
         user_model = UserModel(username=user.username, password=user.password)
         try:
             self.token = login_user(user_model)
+            set_token(self.token)
             messagebox.showinfo("Succès", "User logged !")
             goto()
         except Exception as errors:

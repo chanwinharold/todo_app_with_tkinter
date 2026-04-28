@@ -33,21 +33,22 @@ def login_user(user: UserModel):
                        WHERE username = ?
                        """, [user.username])
         res = cursor.fetchone()
-        res = UserModel(
+        if not res:
+            raise Exception("User not found")
+
+        db_user = UserModel(
             id_user=res[0],
             username=res[1],
             password=res[2],
             created_at=res[3]
         )
-        if not res:
-            raise Exception
 
-        valid: bool = bcrypt.verify(user.password, res.password)
+        valid: bool = bcrypt.verify(user.password, db_user.password)
         if not valid:
-            raise Exception
+            raise Exception("Invalid password")
 
         return jwt.encode(
-            {"id_user": res.id_user},
+            {"id_user": db_user.id_user},
             SECRET_KEY,
             algorithm=ALGORITHM
         )
